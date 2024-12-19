@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Movie Quotes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        .movies {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .movie-button {
+            padding: 10px 15px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+        }
+
+        #quote {
+            font-size: 1.5em;
+            font-style: italic;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pick a Movie</h1>
+        <p>Select your favorite movie to see a famous quote. The list and quotes will shuffle every time you pick one!</p>
+        <div class="movies" id="movie-buttons"></div>
+        <p id="quote"></p>
+    </div>
+    <script>
+        const movieQuotes = {
+            "Ferris Bueller's Day Off": [
+                "Life moves pretty fast. If you don’t stop and look around once in a while, you could miss it.",
+                "The question isn’t what are we going to do. The question is what aren’t we going to do?",
+                "You’re not dying. You just can’t think of anything good to do."
+            ],
+            "Cars": [
+                "Float like a Cadillac, sting like a Beemer.",
+                "I’m a precision instrument of speed and aerodynamics.",
+                "Speed. I am speed."
+            ],
+            "The Hunger Games": [
+                "May the odds be ever in your favor.",
+                "Fire is catching! And if we burn, you burn with us!",
+                "Hope. It is the only thing stronger than fear."
+            ],
+            "Psych": [
+                "I've heard it both ways.",
+                "You know that's right.",
+                "Don't be the guy who gets a pineapple stuck on his head."
+            ],
+            "We Bought a Zoo": [
+                "You know, sometimes all you need is twenty seconds of insane courage.",
+                "Why not? You don’t even need a reason.",
+                "Their happy is too loud."
+            ]
+        };
+
+        const movieButtonsContainer = document.getElementById("movie-buttons");
+        const quoteElement = document.getElementById("quote");
+
+        function getRandomMovies() {
+            const movieEntries = Object.entries(movieQuotes);
+            return movieEntries.sort(() => 0.5 - Math.random()).slice(0, 6);
+        }
+
+        function updateMovies() {
+            const randomMovies = getRandomMovies();
+            movieButtonsContainer.innerHTML = ""; // Clear buttons
+            randomMovies.forEach(([movie, quotes]) => {
+                const button = document.createElement("button");
+                button.textContent = movie;
+                button.classList.add("movie-button");
+                button.addEventListener("click", () => {
+                    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                    quoteElement.textContent = `"${randomQuote}"`;
+                    updateMovies(); // Reshuffle the movie list
+                });
+                movieButtonsContainer.appendChild(button);
+            });
+        }
+
+        // Initialize movie buttons
+        updateMovies();
+    </script>
+</body>
+</html>
